@@ -430,69 +430,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Lab №2
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            Lab №2
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../task2/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Task 2
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -573,23 +510,30 @@
 <h3 id="serverpy">server.py</h3>
 <pre><code class="language-python">import socket
 
-server = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-server.bind(('localhost', 8080))
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_address = ('localhost', 12345)
+server_socket.bind(server_address)
+
+print(&quot;Server is waiting for a client...&quot;)
 
 while True:
-    data, address = server.recvfrom(1024)
-    server.sendto(b&quot;Hello, client&quot;, address)
+    data, client_address = server_socket.recvfrom(1024)
+    print(f&quot;Message from client: {data.decode('utf-8')}&quot;)
+    response_message = &quot;Hello, client&quot;
+    server_socket.sendto(response_message.encode('utf-8'), client_address)
 </code></pre>
 <h3 id="clientpy">client.py</h3>
 <pre><code class="language-python">import socket
 
-client = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-address = ('localhost', 8080)
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+server_address = ('localhost', 12345)
+message = &quot;Hello, server&quot;
+client_socket.sendto(message.encode('utf-8'), server_address)
+response, _ = client_socket.recvfrom(1024)
 
-client.sendto(b&quot;Hello, server&quot;, address)
-data, server = client.recvfrom(1024)
-print(data.decode('utf-8'))
-client.close()
+print(f&quot;Message from server: {response.decode('utf-8')}&quot;)
+
+client_socket.close()
 </code></pre>
 
 

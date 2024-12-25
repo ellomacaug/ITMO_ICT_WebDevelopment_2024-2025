@@ -11,8 +11,10 @@
         <link rel="canonical" href="https://ellomacaug.github.io/ITMO_ICT_WebDevelopment_2024-2025/task2/">
       
       
-        <link rel="prev" href="../task5/">
+        <link rel="prev" href="../task1/">
       
+      
+        <link rel="next" href="../task3/">
       
       
       <link rel="icon" href="../assets/images/favicon.png">
@@ -216,17 +218,19 @@
       
   
   
+    
   
   
+  
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
@@ -240,7 +244,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             Lab №1
@@ -426,138 +430,6 @@
   
 
     
-      
-      
-  
-  
-    
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Lab №2
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            Lab №2
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-    
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Task 2
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
-        
-  
-  <span class="md-ellipsis">
-    Task 2
-  </span>
-  
-
-      </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    <span class="md-ellipsis">
-      Требования:
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#serverpy" class="md-nav__link">
-    <span class="md-ellipsis">
-      server.py
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#clientpy" class="md-nav__link">
-    <span class="md-ellipsis">
-      client.py
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -628,7 +500,7 @@
 
 <h1 id="2">Задание 2</h1>
 <p>Реализовать клиентскую и серверную часть приложения. Клиент запрашивает выполнение математической операции, параметры которой вводятся с клавиатуры. Сервер обрабатывает данные и возвращает результат клиенту.</p>
-<p><code>Решение квадратного уравнения.</code></p>
+<p><code>Площадь трапеции.</code></p>
 <h3 id="_1">Требования:</h3>
 <ul>
 <li>Обязательно использовать библиотеку socket.</li>
@@ -637,48 +509,63 @@
 <hr />
 <h3 id="serverpy">server.py</h3>
 <pre><code class="language-python">import socket
-import math
 
-def equation_solution(a, b, c):
-    d = b ** 2 - 4 * a * c
-    if d &lt; 0:
-        return &quot;No roots&quot;
-    elif d == 0:
-        root = -b / (2 * a)
-        return f&quot;One root: {root}&quot;
-    else:
-        root1 = (-b + math.sqrt(d)) / (2 * a)
-        root2 = (-b - math.sqrt(d)) / (2 * a)
-        return f&quot;Two roots: {root1}, {root2}&quot;
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_address = ('localhost', 12345)
+server_socket.bind(server_address)
 
 
-server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind(('localhost', 8080))
-server.listen(4)
+server_socket.listen(1)
+print(&quot;Server is waiting for a client...&quot;)
 
 while True:
-    clientsocket, address = server.accept()
-    data = clientsocket.recv(1024).decode('utf-8')
-    a, b, c = map(float, data.split(','))
-    result = equation_solution(a, b, c)
-    clientsocket.send(result.encode('utf-8'))
-    clientsocket.close()
+
+    client_socket, client_address = server_socket.accept()
+    print(f&quot;Connected client with the address: {client_address}&quot;)
+
+    try:
+
+        data = client_socket.recv(1024).decode('utf-8')
+        print(f&quot;Message from client: {data}&quot;)
+
+        a, b, h = map(float, data.split(','))
+
+        result = (a+b)/2 * h
+
+        response_message = f&quot;Area of the trapezium: {result}&quot;
+        client_socket.send(response_message.encode('utf-8'))
+
+    except Exception as e:
+        print(f&quot;Error while calculating the response: {e}&quot;)
+
+    finally:
+        client_socket.close()
 </code></pre>
 <h3 id="clientpy">client.py</h3>
 <pre><code class="language-python">import socket
 
-a = input(&quot;a:&quot;)
-b = input(&quot;b:&quot;)
-c = input(&quot;c:&quot;)
 
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('localhost', 8080))
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server_address = ('localhost', 12345)
+client_socket.connect(server_address)
 
-client.send(f&quot;{a},{b},{c}&quot;.encode('utf-8'))
-result = client.recv(1024).decode('utf-8')
-print(f&quot;Solution: {result}&quot;)
+try:
+    print(f&quot;To calculate the area of the trapezium input&quot;)
+    a = float(input(&quot;Base a: &quot;))
+    b = float(input(&quot;Base b: &quot;))
+    h = float(input(&quot;Height h: &quot;))
 
-client.close()
+    message = f&quot;{a},{b},{h}&quot;
+    client_socket.send(message.encode('utf-8'))
+
+    response = client_socket.recv(1024).decode('utf-8')
+    print(f&quot;Server response: {response}&quot;)
+
+except Exception as e:
+    print(f&quot;Error while communicating with the server: {e}&quot;)
+
+finally:
+    client_socket.close()
 </code></pre>
 
 

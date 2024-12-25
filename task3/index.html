@@ -374,15 +374,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#clientpy" class="md-nav__link">
-    <span class="md-ellipsis">
-      client.py
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#indexhtml" class="md-nav__link">
     <span class="md-ellipsis">
       index.html
@@ -454,69 +445,6 @@
   
 
     
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
-        
-          
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  <span class="md-ellipsis">
-    Lab №2
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            Lab №2
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../task2/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Task 2
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
   </ul>
 </nav>
                   </div>
@@ -572,15 +500,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#clientpy" class="md-nav__link">
-    <span class="md-ellipsis">
-      client.py
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#indexhtml" class="md-nav__link">
     <span class="md-ellipsis">
       index.html
@@ -616,53 +535,45 @@
 <h3 id="serverpy">server.py</h3>
 <pre><code class="language-python">import socket
 
+
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind(('localhost', 8080))
-server_socket.listen(4)
+server_address = ('localhost', 5555)
+server_socket.bind(server_address)
 
-with open('index.html', 'r', encoding='utf-8') as file:
-    content = file.read()
 
-http_response = (
-    &quot;HTTP/1.1 200 OK\r\n&quot;
-    &quot;Content-Type: text/html; charset=utf-8\r\n&quot;
-    &quot;Content-Length: {}\r\n&quot;
-    &quot;Connection: close\r\n&quot;
-    &quot;\r\n&quot;
-    &quot;{}&quot;
-).format(len(content.encode('utf-8')), content)
+server_socket.listen(1)
+print(&quot;Server is waiting for a client...&quot;)
 
 while True:
-    connection, address = server_socket.accept()
-    request = connection.recv(1024).decode('utf-8')
-    print(f&quot;Запрос:\n{request}&quot;)
-    connection.sendall(http_response.encode('utf-8'))
-    connection.close()
-</code></pre>
-<h3 id="clientpy">client.py</h3>
-<pre><code class="language-python">import socket
+    client_socket, client_address = server_socket.accept()
+    print(f&quot;Connected client with the address: {client_address}&quot;)
 
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('localhost', 8080))
+    try:
+        with open(&quot;index.html&quot;, &quot;r&quot;) as file:
+            html_content = file.read()
+        http_response = f&quot;HTTP/1.1 200 OK\nContent-Length: {len(html_content)}\n\n{html_content}&quot;
+        client_socket.send(http_response.encode('utf-8'))
 
-http_request = &quot;GET / HTTP/1.1\r\nHost: localhost\r\n\r\n&quot;
-client.sendall(http_request.encode('utf-8'))
+    except Exception as e:
+        print(f&quot;Error while calculating the response: {e}&quot;)
 
-response = client.recv(4096)
-print(response.decode('utf-8'))
-client.close()
+    finally:
+        client_socket.close()
 </code></pre>
 <h3 id="indexhtml">index.html</h3>
 <pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
+&lt;html&gt;
 &lt;head&gt;
-    &lt;meta charset=&quot;UTF-8&quot;&gt;
-    &lt;title&gt;Some title&lt;/title&gt;
+  &lt;title&gt;Prozhektor Ksyushi Anisimovoy&lt;/title&gt;
 &lt;/head&gt;
 &lt;body&gt;
+
+There will be the plot of the Twilight Saga.
+
 &lt;/body&gt;
 &lt;/html&gt;
 </code></pre>
+<p><img alt="Скрин" src="../scrsh.jpg" /></p>
 
 
 
