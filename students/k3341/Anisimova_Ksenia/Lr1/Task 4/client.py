@@ -7,11 +7,11 @@ def receive_messages(client_socket):
             message = client_socket.recv(1024).decode('utf-8')
             print(message)
         except Exception as e:
-            print(f"Error while receiving the messages from server: {e}")
+            print(f"Error while receiving a message from the server: {e}")
             break
 
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_address = ('localhost', 8080)
+server_address = ('localhost', 8081)
 client_socket.connect(server_address)
 
 username = input("Input your name: ")
